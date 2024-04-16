@@ -20,7 +20,7 @@ public class CrawlerImpl implements Crawler {
     private MDWriter mdwriter = new MDWriterImpl();
 
     @Override
-    public void Crawl(CrawlArguments arguments) {
+    public void Crawl(CrawlArguments arguments) throws IllegalStateException {
         List<String> URLsToCrawl = ConvertCrawlArgumentsToStartingURLs(arguments);
         while (!URLsToCrawl.isEmpty()) {
             String url = URLsToCrawl.remove(0);
@@ -70,13 +70,13 @@ public class CrawlerImpl implements Crawler {
         return urls;
     }
 
-    private void AddFailedWebsiteCrawlToResult(String url) {
+    private void AddFailedWebsiteCrawlToResult(String url) throws IllegalStateException {
         mdwriter.AppendFile("###FAILED TO LOAD WEBSITE:\n" + url + "\n");
     }
 
-    private void AddWebsiteToCrawlResult(String url, List<Heading> results) {
+    private void AddWebsiteToCrawlResult(String url, List<Heading> results) throws IllegalStateException {
         mdwriter.AppendFile("                             aHHHHb.\n" + "                            /`HHHHHHb\n" + "                            > `dHHHHH\n" + "                           /  dHHHHHHb\n" + "                           ; /HHHHHHHH\n" + "                          .-\"\"FHHHHHHH\n" + "                         (    JHHHHHHH.\n" + "                          \\    FHHHHHHb\\\n" + "                         / \\   JHHHHHHH \\\n" + "                       .'   \\   FHHHHHH  \\\n" + "                       `._,  \\   \\HHHHF   Y\n" + "                          |   >   \\HHF`Y  |\n" + "                          | .'   .'Y   |  |\n" + "                          .'   .': |   |  j\n" + "                        .'  _.'  : \\   |  F\n" + "                      .' .-;       .`-.| j\n" + "                     .  ;  :        .  | /\n" + "                     :  (  |......___)/_|)\n" + "                      ```  '\"\"\"\"-._   _.-'  >scritch<\n" + "                           |       `.'-'_'\n" + "                           |  ` - '/  -'|     >scracth<\n" + "                           |      /     |\n" + "                           |     /|     |\n" + "                           |     ||Krogg|dp");
-        mdwriter.AppendFile("Successfully scraped website: "+url+"\n");
+        mdwriter.AppendFile("Successfully scraped website: " + url + "\n");
         for (Heading heading : results) {
             if (heading.level() == Tag.valueOf("h1")) {
                 mdwriter.AppendFile("# H1:" + heading.value() + "\n");
