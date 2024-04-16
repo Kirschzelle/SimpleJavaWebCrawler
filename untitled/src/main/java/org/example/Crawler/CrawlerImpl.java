@@ -1,11 +1,10 @@
 package org.example.Crawler;
 
 import org.example.MDWriter.MDWriter;
-import org.example.MDWriter.MDWriterImpl;
 import org.example.Structs.CrawlArguments;
 import org.example.Structs.Heading;
+import org.example.Structs.URL;
 import org.example.Translator.Translator;
-import org.example.Translator.TranslatorImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,28 +12,40 @@ import org.jsoup.parser.Tag;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CrawlerImpl implements Crawler {
-    private Translator translator = new TranslatorImpl();
-    private MDWriter mdwriter = new MDWriterImpl();
+    private Translator translator;
+    private MDWriter mdwriter;
+
+    public CrawlerImpl(Translator translator, MDWriter writer) {
+        this.translator = translator;
+        this.mdwriter = writer;
+    }
 
     @Override
     public void Crawl(CrawlArguments arguments) throws IllegalStateException {
-        List<String> URLsToCrawl = ConvertCrawlArgumentsToStartingURLs(arguments);
+        List<URL> URLsToCrawl = ConvertCrawlArgumentsToStartingURLs(arguments);
         while (!URLsToCrawl.isEmpty()) {
-            String url = URLsToCrawl.remove(0);
+            URL url = URLsToCrawl.remove(0);
+            if (url.level() >= arguments.depth()) {
+                AddExceededDepthToCrawlResult(url);
+                continue;
+            }
             try {
-                Document content = GetWebsiteContent(url);
+                Document content = GetWebsiteContent(url.value());
                 AddWebsiteToCrawlResult(url, TranslateHeadings(GetDocumentHeadings(content), arguments.targetLanguage()));
-                URLsToCrawl.addAll(GetDocumentUrls(content));
+                for (String newUrl : GetDocumentUrlsAsStrings(content)) {
+                    URLsToCrawl.add(0, new URL(newUrl, url.level() + 1));
+                }
             } catch (IOException e) {
                 AddFailedWebsiteCrawlToResult(url);
             }
         }
     }
 
-    private Document GetWebsiteContent(String url) throws IOException {
+    public Document GetWebsiteContent(String url) throws IOException {
         return Jsoup.connect(url).get();
     }
 
@@ -46,11 +57,12 @@ public class CrawlerImpl implements Crawler {
         return headings;
     }
 
-    private List<String> GetDocumentUrls(Document document) {
+    private List<String> GetDocumentUrlsAsStrings(Document document) {
         List<String> urls = new ArrayList<>();
         for (Element linkElement : document.select("a[href]")) {
             urls.add(linkElement.attr("abs:href"));
         }
+        Collections.sort(urls, Collections.reverseOrder());
         return urls;
     }
 
@@ -62,35 +74,39 @@ public class CrawlerImpl implements Crawler {
         return translatedHeadings;
     }
 
-    private List<String> ConvertCrawlArgumentsToStartingURLs(CrawlArguments arguments) {
-        List<String> urls = new ArrayList<>();
+    private List<URL> ConvertCrawlArgumentsToStartingURLs(CrawlArguments arguments) {
+        List<URL> urls = new ArrayList<>();
         for (String domain : arguments.topLevelDomains()) {
-            urls.add(arguments.url() + domain);
+            urls.add(new URL(arguments.url() + domain, 0));
         }
         return urls;
     }
 
-    private void AddFailedWebsiteCrawlToResult(String url) throws IllegalStateException {
-        mdwriter.AppendFile("###FAILED TO LOAD WEBSITE:\n" + url + "\n");
+    private void AddFailedWebsiteCrawlToResult(URL url) throws IllegalStateException {
+        mdwriter.AppendFile("\n###FAILED TO LOAD WEBSITE:\n" + url.value(), url.level());
     }
 
-    private void AddWebsiteToCrawlResult(String url, List<Heading> results) throws IllegalStateException {
-        mdwriter.AppendFile("                             aHHHHb.\n" + "                            /`HHHHHHb\n" + "                            > `dHHHHH\n" + "                           /  dHHHHHHb\n" + "                           ; /HHHHHHHH\n" + "                          .-\"\"FHHHHHHH\n" + "                         (    JHHHHHHH.\n" + "                          \\    FHHHHHHb\\\n" + "                         / \\   JHHHHHHH \\\n" + "                       .'   \\   FHHHHHH  \\\n" + "                       `._,  \\   \\HHHHF   Y\n" + "                          |   >   \\HHF`Y  |\n" + "                          | .'   .'Y   |  |\n" + "                          .'   .': |   |  j\n" + "                        .'  _.'  : \\   |  F\n" + "                      .' .-;       .`-.| j\n" + "                     .  ;  :        .  | /\n" + "                     :  (  |......___)/_|)\n" + "                      ```  '\"\"\"\"-._   _.-'  >scritch<\n" + "                           |       `.'-'_'\n" + "                           |  ` - '/  -'|     >scracth<\n" + "                           |      /     |\n" + "                           |     /|     |\n" + "                           |     ||Krogg|dp");
-        mdwriter.AppendFile("Successfully scraped website: " + url + "\n");
+    private void AddWebsiteToCrawlResult(URL url, List<Heading> results) throws IllegalStateException {
+        mdwriter.AppendFile("\n                             aHHHHb.\n" + "                            /`HHHHHHb\n" + "                            > `dHHHHH\n" + "                           /  dHHHHHHb\n" + "                           ; /HHHHHHHH\n" + "                          .-\"\"FHHHHHHH\n" + "                         (    JHHHHHHH.\n" + "                          \\    FHHHHHHb\\\n" + "                         / \\   JHHHHHHH \\\n" + "                       .'   \\   FHHHHHH  \\\n" + "                       `._,  \\   \\HHHHF   Y\n" + "                          |   >   \\HHF`Y  |\n" + "                          | .'   .'Y   |  |\n" + "                          .'   .': |   |  j\n" + "                        .'  _.'  : \\   |  F\n" + "                      .' .-;       .`-.| j\n" + "                     .  ;  :        .  | /\n" + "                     :  (  |......___)/_|)\n" + "                      ```  '\"\"\"\"-._   _.-'  >scritch<\n" + "                           |       `.'-'_'\n" + "                           |  ` - '/  -'|     >scracth<\n" + "                           |      /     |\n" + "                           |     /|     |\n" + "                           |     ||Krogg|dp", url.level());
+        mdwriter.AppendFile("\nSuccessfully scraped website: " + url.value(), url.level());
         for (Heading heading : results) {
             if (heading.level() == Tag.valueOf("h1")) {
-                mdwriter.AppendFile("# H1:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n# H1:" + heading.value(), url.level());
             } else if (heading.level() == Tag.valueOf("h2")) {
-                mdwriter.AppendFile("## H2:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n## H2:" + heading.value(), url.level());
             } else if (heading.level() == Tag.valueOf("h3")) {
-                mdwriter.AppendFile("### H3:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n### H3:" + heading.value(), url.level());
             } else if (heading.level() == Tag.valueOf("h4")) {
-                mdwriter.AppendFile("#### H4:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n#### H4:" + heading.value(), url.level());
             } else if (heading.level() == Tag.valueOf("h5")) {
-                mdwriter.AppendFile("##### H5:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n##### H5:" + heading.value(), url.level());
             } else {
-                mdwriter.AppendFile("###### H6:" + heading.value() + "\n");
+                mdwriter.AppendFile("\n###### H6:" + heading.value(), url.level());
             }
         }
+    }
+
+    private void AddExceededDepthToCrawlResult(URL url) {
+        mdwriter.AppendFile("\n###FOUND URL BUT EXCEEDED CRAWLING DEPTH:" + url.value(), url.level());
     }
 }
