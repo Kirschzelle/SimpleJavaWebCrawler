@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 public class InputImpl implements Input {
     private Scanner scanner;
+
     @Override
     public CrawlArguments GetInput() {
         scanner = new Scanner(System.in);
@@ -55,7 +56,7 @@ public class InputImpl implements Input {
         List<String> topLevelDomains = new ArrayList<>();
         List<String> validTopLevelDomains = Arrays.asList(".com", ".org", ".net", ".gov", ".edu", ".mil", ".info", ".biz", ".io", ".co", ".me", ".tv", ".ca", ".uk", ".au", ".de", ".jp", ".fr", ".cn", ".it");
         while (true) {
-            System.out.print("Please enter a top-level domain (e.g., .com), or type 'done' to finish");
+            System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("done")) {
                 break;
@@ -70,11 +71,18 @@ public class InputImpl implements Input {
 
     private String GetTargetLanguage() {
         String targetLanguage;
-        List<String> supportedLanguages = new ArrayList<>();
+        List<String> languageCodes = Arrays.asList(
+                "ar", "bg", "bn", "bs", "ca", "cnr", "cs", "cy", "da", "de",
+                "el", "en", "es", "et", "eu", "fi", "fr", "fr-CA", "ga",
+                "gu", "he", "hi", "hr", "hu", "id", "it", "ja", "kn", "ko",
+                "lt", "lv", "ml", "mr", "ms", "mt", "nb", "ne", "nl", "pa",
+                "pl", "pt", "ro", "ru", "si", "sk", "sl", "sr", "sv", "ta",
+                "te", "th", "tr", "uk", "ur", "vi", "zh", "zh-TW"
+        );
         while (true) {
-            System.out.print("Please enter a target language to translate");
+            System.out.print("Please enter a target language (e.g. en, ru, de)");
             targetLanguage = scanner.nextLine();
-            if (supportedLanguages.contains(targetLanguage.toLowerCase())) {
+            if (languageCodes.contains(targetLanguage.toLowerCase())) {
                 break;
             } else {
                 System.out.println("Invalid target language. Please try again");
