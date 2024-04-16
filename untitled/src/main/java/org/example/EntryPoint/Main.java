@@ -1,12 +1,27 @@
 package org.example.EntryPoint;
 
+import org.example.Crawler.Crawler;
+import org.example.Crawler.CrawlerImpl;
+import org.example.Input.Input;
+import org.example.Input.InputImpl;
+import org.example.MDWriter.MDWriter;
+import org.example.MDWriter.MDWriterImpl;
+import org.example.Structs.CrawlArguments;
+import org.example.Translator.Translator;
+import org.example.Translator.TranslatorImpl;
+
+import java.nio.file.Paths;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        MDWriter writer = new MDWriterImpl();
+        Translator translator = new TranslatorImpl();
+        Input input = new InputImpl();
+        CrawlArguments arguments = input.GetInput();
+        writer.SetFilePath(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"/outputs/"+arguments.url()+".md");
+        writer.CreateFile(arguments);
+        Crawler crawler = new CrawlerImpl(translator, writer);
+        crawler.Crawl(arguments);
     }
 }
 
-//Get Parameters
-//Crawl
-//Crawl at found links
-//Save into .md file

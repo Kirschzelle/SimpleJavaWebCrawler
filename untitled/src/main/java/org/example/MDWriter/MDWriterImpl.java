@@ -26,10 +26,12 @@ public class MDWriterImpl implements MDWriter {
         }
 
         try {
+            Files.deleteIfExists(Paths.get(filePath));
             Files.createFile(Paths.get(filePath));
         } catch (IOException e) {
             throw new IllegalStateException("Failed to create the file.", e);
         }
+        AppendFile("\nUrl: "+arguments.url()+"\nDomains: "+arguments.topLevelDomains()+"\nDepth: "+arguments.depth()+"\nLanguage: "+arguments.targetLanguage(),0);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class MDWriterImpl implements MDWriter {
 
     private String AddDepthVisualToString(String input, int level){
         StringBuilder toInsert = new StringBuilder();
+        toInsert.append("\n");
         toInsert.append("-".repeat(Math.max(0, level)));
 
         String[] parts = input.split("\\n");
