@@ -3,5 +3,7 @@ package org.example.MDWriter;
 import org.example.Structs.CrawlArguments;
 
 public interface MDWriter {
-    public void WriteFile(String content, CrawlArguments arguments, String filePath);
+    public void CreateFile(CrawlArguments arguments) throws IllegalStateException;
+    public void SetFilePath(String filePath);
+    public void AppendFile(String content);
 }
