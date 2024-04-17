@@ -7,5 +7,5 @@ public interface MDWriter {
 
     void SetFilePath(String filePath) throws IllegalArgumentException;
 
-    public void AppendFile(String content, int level) throws IllegalStateException;
+    void AppendFile(String content, int level) throws IllegalStateException;
 }

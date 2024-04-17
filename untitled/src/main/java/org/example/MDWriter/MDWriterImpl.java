@@ -31,7 +31,33 @@ public class MDWriterImpl implements MDWriter {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to create the file.", e);
         }
-        AppendFile("\n                             aHHHHb.\n" + "                            /`HHHHHHb\n" + "                            > `dHHHHH\n" + "                           /  dHHHHHHb\n" + "                           ; /HHHHHHHH\n" + "                          .-\"\"FHHHHHHH\n" + "                         (    JHHHHHHH.\n" + "                          \\    FHHHHHHb\\\n" + "                         / \\   JHHHHHHH \\\n" + "                       .'   \\   FHHHHHH  \\\n" + "                       `._,  \\   \\HHHHF   Y\n" + "                          |   >   \\HHF`Y  |\n" + "                          | .'   .'Y   |  |\n" + "                          .'   .': |   |  j\n" + "                        .'  _.'  : \\   |  F\n" + "                      .' .-;       .`-.| j\n" + "                     .  ;  :        .  | /\n" + "                     :  (  |......___)/_|)\n" + "                      ```  '\"\"\"\"-._   _.-'  >scritch<\n" + "                           |       `.'-'_'\n" + "                           |  ` - '/  -'|     >scracth<\n" + "                           |      /     |\n" + "                           |     /|     |\n" + "                           |     ||Krogg|dp", 0);
+        AppendFile("""
+
+                                             aHHHHb.
+                                            /`HHHHHHb
+                                            > `dHHHHH
+                                           /  dHHHHHHb
+                                           ; /HHHHHHHH
+                                          .-""FHHHHHHH
+                                         (    JHHHHHHH.
+                                          \\    FHHHHHHb\\
+                                         / \\   JHHHHHHH \\
+                                       .'   \\   FHHHHHH  \\
+                                       `._,  \\   \\HHHHF   Y
+                                          |   >   \\HHF`Y  |
+                                          | .'   .'Y   |  |
+                                          .'   .': |   |  j
+                                        .'  _.'  : \\   |  F
+                                      .' .-;       .`-.| j
+                                     .  ;  :        .  | /
+                                     :  (  |......___)/_|)
+                                      ```  '""\""-._   _.-'  >scritch<
+                                           |       `.'-'_'
+                                           |  ` - '/  -'|     >scracth<
+                                           |      /     |
+                                           |     /|     |
+                                           |     ||Krogg|dp\
+                """, 0);
         AppendFile("\nUrl: "+arguments.url()+"\nDomains: "+arguments.topLevelDomains()+"\nDepth: "+arguments.depth()+"\nLanguage: "+arguments.targetLanguage(),0);
     }
 
@@ -45,7 +71,7 @@ public class MDWriterImpl implements MDWriter {
 
     @Override
     public void AppendFile(String content, int level) throws IllegalStateException, IllegalArgumentException {
-        if (filePath == null || filePath.isEmpty()) {
+        if (filePath == null || filePath.isEmpty() || Files.notExists(Path.of(filePath))) {
             throw new IllegalStateException("File path is not set.");
         }
         if (level < 0){

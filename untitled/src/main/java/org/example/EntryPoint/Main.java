@@ -19,7 +19,7 @@ public class Main {
         Input input = new InputImpl();
         JsoupDocFetcher fetcher = new JsoupDocFetcherImpl();
         CrawlArguments arguments = input.GetInput();
-        writer.SetFilePath(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + arguments.url() + ".md");
+        writer.SetFilePath(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + arguments.url().replace('/', '-') + ".md");
         writer.CreateFile(arguments);
         Crawler crawler = new CrawlerImpl(translator, writer, fetcher);
         crawler.Crawl(arguments);
