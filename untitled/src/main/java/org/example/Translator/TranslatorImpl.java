@@ -48,8 +48,8 @@ public class TranslatorImpl implements Translator {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://text-translator-v2.p.rapidapi.com/api/translate/detect"))
                 .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", "9da3583d25msh728bd7038dcfdddp15dcdajsn71a3bac3efcd")
-                .header("X-RapidAPI-Host", "text-translator-v2.p.rapidapi.com")
+                .header("X-RapidAPI-Key", API_KEY)
+                .header("X-RapidAPI-Host", TEXT_TRANSLATOR_ENDPOINT)
                 .method("POST", HttpRequest.BodyPublishers.ofString("{\n    \"text\": \"" + toTranslate + "\"\n}"))
                 .build();
         HttpResponse<String> response;

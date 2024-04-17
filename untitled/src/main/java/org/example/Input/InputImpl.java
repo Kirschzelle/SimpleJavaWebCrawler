@@ -25,9 +25,9 @@ public class InputImpl implements Input {
     private String GetURL() {
         String url;
         while (true) {
-            System.out.print("Please enter a url without the top-level domain\n e.g. https://www.example");
+            System.out.print("Please enter a url without the top-level domain\n e.g. https://www.example: ");
             url = scanner.nextLine();
-            String urlPattern = "^https://www\\..+$";
+            String urlPattern = "^(http|https)://(www\\.)?.+$";
             if (Pattern.matches(urlPattern, url)) {
                 break;
             } else {
@@ -40,13 +40,13 @@ public class InputImpl implements Input {
     private int GetDepth() {
         int depth;
         while (true) {
-            System.out.print("Please enter an integer to define the depth");
+            System.out.print("Please enter an integer to define the depth: ");
             String input = scanner.nextLine();
             try {
                 depth = Integer.parseInt(input);
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter an integer to define the depth");
+                System.out.println("Invalid input. Please enter an integer to define the depth: ");
             }
         }
         return depth;
@@ -54,9 +54,9 @@ public class InputImpl implements Input {
 
     private List<String> GetTopLevelDomains() {
         List<String> topLevelDomains = new ArrayList<>();
-        List<String> validTopLevelDomains = Arrays.asList(".com", ".org", ".net", ".gov", ".edu", ".mil", ".info", ".biz", ".io", ".co", ".me", ".tv", ".ca", ".uk", ".au", ".de", ".jp", ".fr", ".cn", ".it");
+        List<String> validTopLevelDomains = Arrays.asList(".at", ".com", ".org", ".net", ".gov", ".edu", ".mil", ".info", ".biz", ".io", ".co", ".me", ".tv", ".ca", ".uk", ".au", ".de", ".jp", ".fr", ".cn", ".it");
         while (true) {
-            System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish");
+            System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish: ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("done")) {
                 break;
@@ -80,7 +80,7 @@ public class InputImpl implements Input {
                 "te", "th", "tr", "uk", "ur", "vi", "zh", "zh-TW"
         );
         while (true) {
-            System.out.print("Please enter a target language (e.g. en, ru, de)");
+            System.out.print("Please enter a target language (e.g. en, ru, de): ");
             targetLanguage = scanner.nextLine();
             if (languageCodes.contains(targetLanguage.toLowerCase())) {
                 break;
