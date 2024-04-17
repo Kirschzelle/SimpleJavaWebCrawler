@@ -1,6 +1,7 @@
 package org.example.Translator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -16,16 +17,15 @@ public class TranslatorImpl implements Translator {
     @Override
     public String Translate(String toTranslate, String targetLanguage) {
         String sourceLanguage = GetSourceLanguage(toTranslate);
+        if (sourceLanguage.equals(targetLanguage)) {
+            return toTranslate;
+        }
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://text-translator-v2.p.rapidapi.com/api/translate/text"))
                 .header("content-type", "application/json")
                 .header("X-RapidAPI-Key", API_KEY)
                 .header("X-RapidAPI-Host", TEXT_TRANSLATOR_ENDPOINT)
-                .method("POST", HttpRequest.BodyPublishers.ofString("{\n" +
-                        "    \\\"text\\\": \\\"" + toTranslate + "\\\",\n" +
-                        "    \\\"source\\\": \\\"" + sourceLanguage + "\\\",\n" +
-                        "    \\\"target\\\": \\\"" + targetLanguage + "\\\"\n" +
-                        "}"))
+                .method("POST", HttpRequest.BodyPublishers.ofString("{\n    \"text\": \"" + toTranslate + "\",\n    \"source\": \"" + sourceLanguage + "\",\n    \"target\": \"" + targetLanguage + "\"\n}"))
                 .build();
         HttpResponse<String> response;
         try {
@@ -33,6 +33,7 @@ public class TranslatorImpl implements Translator {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
         JSONObject jsonResponse = new JSONObject(response.body());
         String status = jsonResponse.getString("status");
         if ("success".equals(status)) {
@@ -41,7 +42,7 @@ public class TranslatorImpl implements Translator {
             JSONObject translationInfo = translations.getJSONObject(0);
             return translationInfo.getString("translation");
         }
-        return null;
+        return toTranslate;
     }
 
     private String GetSourceLanguage(String toTranslate) {
@@ -64,9 +65,9 @@ public class TranslatorImpl implements Translator {
             JSONObject payload = jsonResponse.getJSONObject("payload");
             JSONArray languages = payload.getJSONArray("languages");
             JSONObject languageInfo = languages.getJSONObject(0);
-            JSONObject language = languageInfo.getJSONObject("languages");
+            JSONObject language = languageInfo.getJSONObject("language");
             return language.getString("language");
         }
-        return null;
+        return "en";
     }
 }

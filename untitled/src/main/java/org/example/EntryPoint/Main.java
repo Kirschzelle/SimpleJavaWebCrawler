@@ -10,8 +10,6 @@ import org.example.Structs.CrawlArguments;
 import org.example.Translator.Translator;
 import org.example.Translator.TranslatorImpl;
 
-import java.nio.file.Paths;
-
 public class Main {
     public static void main(String[] args) {
         MDWriter writer = new MDWriterImpl();

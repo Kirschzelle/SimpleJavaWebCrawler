@@ -15,8 +15,8 @@ public class InputImpl implements Input {
     public CrawlArguments GetInput() {
         scanner = new Scanner(System.in);
         String url = GetURL();
-        int depth = GetDepth();
         List<String> topLevelDomains = GetTopLevelDomains();
+        int depth = GetDepth();
         String targetLanguage = GetTargetLanguage();
         scanner.close();
         return new CrawlArguments(url, depth, topLevelDomains, targetLanguage);
@@ -25,7 +25,7 @@ public class InputImpl implements Input {
     private String GetURL() {
         String url;
         while (true) {
-            System.out.print("Please enter a url without the top-level domain\n e.g. https://www.example: ");
+            System.out.print("Please enter a url without the top-level domain\ne.g. https://www.example: ");
             url = scanner.nextLine();
             String urlPattern = "^(http|https)://(www\\.)?.+$";
             if (Pattern.matches(urlPattern, url)) {
@@ -58,7 +58,9 @@ public class InputImpl implements Input {
         while (true) {
             System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish: ");
             String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("done")) {
+            if (input.equalsIgnoreCase("done") && topLevelDomains.isEmpty()) {
+                System.out.println("At least 1 top-level domain is required. Please try again");
+            } else if (input.equalsIgnoreCase("done")) {
                 break;
             } else if (validTopLevelDomains.contains(input.toLowerCase())) {
                 topLevelDomains.add(input);
