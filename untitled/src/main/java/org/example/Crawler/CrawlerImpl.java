@@ -87,7 +87,6 @@ public class CrawlerImpl implements Crawler {
     }
 
     private void AddWebsiteToCrawlResult(URL url, List<Heading> results) throws IllegalStateException {
-        mdwriter.AppendFile("\n                             aHHHHb.\n" + "                            /`HHHHHHb\n" + "                            > `dHHHHH\n" + "                           /  dHHHHHHb\n" + "                           ; /HHHHHHHH\n" + "                          .-\"\"FHHHHHHH\n" + "                         (    JHHHHHHH.\n" + "                          \\    FHHHHHHb\\\n" + "                         / \\   JHHHHHHH \\\n" + "                       .'   \\   FHHHHHH  \\\n" + "                       `._,  \\   \\HHHHF   Y\n" + "                          |   >   \\HHF`Y  |\n" + "                          | .'   .'Y   |  |\n" + "                          .'   .': |   |  j\n" + "                        .'  _.'  : \\   |  F\n" + "                      .' .-;       .`-.| j\n" + "                     .  ;  :        .  | /\n" + "                     :  (  |......___)/_|)\n" + "                      ```  '\"\"\"\"-._   _.-'  >scritch<\n" + "                           |       `.'-'_'\n" + "                           |  ` - '/  -'|     >scracth<\n" + "                           |      /     |\n" + "                           |     /|     |\n" + "                           |     ||Krogg|dp", url.level());
         mdwriter.AppendFile("\nSuccessfully scraped website: " + url.value(), url.level());
         for (Heading heading : results) {
             if (heading.level() == Tag.valueOf("h1")) {
