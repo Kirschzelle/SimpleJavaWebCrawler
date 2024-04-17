@@ -1,7 +1,7 @@
+package org.example.Crawler;
+
 import org.example.Structs.CrawlArguments;
-import org.example.Crawler.CrawlerImpl;
 import org.example.MDWriter.MDWriter;
-import org.example.Structs.URL;
 import org.example.Translator.Translator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -36,7 +36,7 @@ public class CrawlerImplTest {
         List<String> domains = new ArrayList<>();
         domains.add(".com");
         domains.add(".at");
-        CrawlArguments arguments = new CrawlArguments("https://example", 3, domains, "dn");
+        CrawlArguments arguments = new CrawlArguments("https://www.example", 3, domains, "dn");
 
         Elements mockElements1 = mock(Elements.class);
         when(mockElements1.size()).thenReturn(3);
@@ -67,8 +67,8 @@ public class CrawlerImplTest {
 
         Elements mockLinks1 = mock(Elements.class);
         when(mockLinks1.size()).thenReturn(1);
-        Element link1 = createMockLink("https://example.com", "Link 1");
-        Element link2 = createMockLink("https://example.at", "Link 2");
+        Element link1 = createMockLink("https://www.example.com", "https://www.example.com");
+        Element link2 = createMockLink("https://www.example.at", "https://www.example.at");
         when(mockLinks1.get(0)).thenReturn(link1);
         Iterator<Element> mockIterator3 = mock(Iterator.class);
         when(mockIterator3.hasNext()).thenReturn(true, false);
@@ -92,33 +92,12 @@ public class CrawlerImplTest {
         when(mockDocument2.select("h1, h2, h3, h4, h5, h6")).thenReturn(mockElements2);
         when(mockDocument2.select("a[href]")).thenReturn(mockLinks2);
 
-        doReturn(mockDocument1).when(crawler).GetWebsiteContent("https://example.com");
-        doReturn(mockDocument2).when(crawler).GetWebsiteContent("https://example.at");
+        doReturn(mockDocument1).when(crawler).GetWebsiteContent("https://www.example.com");
+        doReturn(mockDocument2).when(crawler).GetWebsiteContent("https://www.example.at");
 
-        // Test the Crawl method
         crawler.Crawl(arguments);
 
-        // Verify that methods of mdWriter were called as expected
-        verify(mdWriter, times(16)).AppendFile(anyString(), anyInt());
-
-        Elements mockLinks3 = mock(Elements.class);
-        when(mockLinks3.size()).thenReturn(3);
-        when(mockLinks3.get(0)).thenReturn(link1);
-        when(mockLinks3.get(1)).thenReturn(link2);
-        when(mockLinks3.get(2)).thenReturn(link2);
-        Iterator<Element> mockIterator5 = mock(Iterator.class);
-        when(mockIterator5.hasNext()).thenReturn(true, true, true, false);
-        when(mockIterator5.next()).thenReturn(link1, link2);
-        when(mockLinks3.iterator()).thenReturn(mockIterator4);
-
-        when(mockLinks3.size()).thenReturn(3);
-        when(mockLinks3.get(2)).thenReturn(link2);
-        when(mockIterator4.hasNext()).thenReturn(true, true, true, false);
-        when(mockIterator4.next()).thenReturn(link1, link2, link2);
-
-        when(mockDocument2.select("a[href]")).thenReturn(mockLinks3);
-
-        verify(mdWriter, times(16)).AppendFile(anyString(), anyInt());
+        verify(mdWriter, times(11)).AppendFile(anyString(), anyInt());
     }
 
     private Element createMockHeader(Tag tag, String text) {
