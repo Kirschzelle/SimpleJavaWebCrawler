@@ -1,5 +1,6 @@
 package org.example.Crawler;
 
+import org.example.JsoupDocFetcher.JsoupDocFetcher;
 import org.example.Structs.CrawlArguments;
 import org.example.MDWriter.MDWriter;
 import org.example.Translator.Translator;
@@ -22,13 +23,14 @@ public class CrawlerImplTest {
 
     private CrawlerImpl crawler;
     private MDWriter mdWriter;
-    private Translator translator;
+    private JsoupDocFetcher fetcher;
 
     @BeforeEach
     void setUp() {
-        translator = Mockito.mock(Translator.class);
+        Translator translator = Mockito.mock(Translator.class);
         mdWriter = Mockito.mock(MDWriter.class);
-        crawler = spy(new CrawlerImpl(translator, mdWriter)); // Spy on the real CrawlerImpl object
+        fetcher = Mockito.mock(JsoupDocFetcher.class);
+        crawler = new CrawlerImpl(translator, mdWriter, fetcher);
     }
 
     @Test
@@ -36,7 +38,7 @@ public class CrawlerImplTest {
         List<String> domains = new ArrayList<>();
         domains.add(".com");
         domains.add(".at");
-        CrawlArguments arguments = new CrawlArguments("https://www.example", 3, domains, "dn");
+        CrawlArguments arguments = new CrawlArguments("https://www.example", 1, domains, "dn");
 
         Elements mockElements1 = mock(Elements.class);
         when(mockElements1.size()).thenReturn(3);
@@ -49,7 +51,7 @@ public class CrawlerImplTest {
         when(mockElements1.get(0)).thenReturn(header1);
         when(mockElements1.get(1)).thenReturn(header2);
         when(mockElements1.get(2)).thenReturn(header3);
-        Iterator<Element> mockIterator1 = mock(Iterator.class);
+        Iterator mockIterator1 = mock(Iterator.class);
         when(mockIterator1.hasNext()).thenReturn(true, true, true, false);
         when(mockIterator1.next()).thenReturn(header1, header2, header3);
         when(mockElements1.iterator()).thenReturn(mockIterator1);
@@ -60,7 +62,7 @@ public class CrawlerImplTest {
         when(mockElements2.get(3)).thenReturn(header4);
         when(mockElements2.get(4)).thenReturn(header5);
         when(mockElements2.get(5)).thenReturn(header6);
-        Iterator<Element> mockIterator2 = mock(Iterator.class);
+        Iterator mockIterator2 = mock(Iterator.class);
         when(mockIterator2.hasNext()).thenReturn(true, true, true, false);
         when(mockIterator2.next()).thenReturn(header4, header5, header6);
         when(mockElements2.iterator()).thenReturn(mockIterator2);
@@ -69,8 +71,8 @@ public class CrawlerImplTest {
         when(mockLinks1.size()).thenReturn(1);
         Element link1 = createMockLink("https://www.example.com", "https://www.example.com");
         Element link2 = createMockLink("https://www.example.at", "https://www.example.at");
-        when(mockLinks1.get(0)).thenReturn(link1);
-        Iterator<Element> mockIterator3 = mock(Iterator.class);
+        when(mockLinks1.get(0)).thenReturn(link2);
+        Iterator mockIterator3 = mock(Iterator.class);
         when(mockIterator3.hasNext()).thenReturn(true, false);
         when(mockIterator3.next()).thenReturn(link1);
         when(mockLinks1.iterator()).thenReturn(mockIterator3);
@@ -79,7 +81,7 @@ public class CrawlerImplTest {
         when(mockLinks2.size()).thenReturn(2);
         when(mockLinks2.get(0)).thenReturn(link1);
         when(mockLinks2.get(1)).thenReturn(link2);
-        Iterator<Element> mockIterator4 = mock(Iterator.class);
+        Iterator mockIterator4 = mock(Iterator.class);
         when(mockIterator4.hasNext()).thenReturn(true, true, false);
         when(mockIterator4.next()).thenReturn(link1, link2);
         when(mockLinks2.iterator()).thenReturn(mockIterator4);
@@ -92,8 +94,8 @@ public class CrawlerImplTest {
         when(mockDocument2.select("h1, h2, h3, h4, h5, h6")).thenReturn(mockElements2);
         when(mockDocument2.select("a[href]")).thenReturn(mockLinks2);
 
-        doReturn(mockDocument1).when(crawler).GetWebsiteContent("https://www.example.com");
-        doReturn(mockDocument2).when(crawler).GetWebsiteContent("https://www.example.at");
+        doReturn(mockDocument1).when(fetcher).GetWebsiteContent("https://www.example.com");
+        doReturn(mockDocument2).when(fetcher).GetWebsiteContent("https://www.example.at");
 
         crawler.Crawl(arguments);
 

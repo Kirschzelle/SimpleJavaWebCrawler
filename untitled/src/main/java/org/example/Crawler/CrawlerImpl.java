@@ -1,11 +1,11 @@
 package org.example.Crawler;
 
+import org.example.JsoupDocFetcher.JsoupDocFetcher;
 import org.example.MDWriter.MDWriter;
 import org.example.Structs.CrawlArguments;
 import org.example.Structs.Heading;
 import org.example.Structs.URL;
 import org.example.Translator.Translator;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -16,12 +16,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class CrawlerImpl implements Crawler {
-    private Translator translator;
-    private MDWriter mdwriter;
+    private final Translator translator;
+    private final MDWriter mdwriter;
+    private final JsoupDocFetcher fetcher;
 
-    public CrawlerImpl(Translator translator, MDWriter writer) {
+    public CrawlerImpl(Translator translator, MDWriter writer, JsoupDocFetcher fetcher) {
         this.translator = translator;
         this.mdwriter = writer;
+        this.fetcher = fetcher;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class CrawlerImpl implements Crawler {
                 continue;
             }
             try {
-                Document content = GetWebsiteContent(url.value());
+                Document content = fetcher.GetWebsiteContent(url.value());
                 AddWebsiteToCrawlResult(url, TranslateHeadings(GetDocumentHeadings(content), arguments.targetLanguage()));
                 for (String newUrl : GetDocumentUrlsAsStrings(content)) {
                     URLsToCrawl.add(0, new URL(newUrl, url.level() + 1));
@@ -45,9 +47,6 @@ public class CrawlerImpl implements Crawler {
         }
     }
 
-    public Document GetWebsiteContent(String url) throws IOException {
-        return Jsoup.connect(url).get();
-    }
 
     private List<Heading> GetDocumentHeadings(Document document) {
         List<Heading> headings = new ArrayList<>();
@@ -62,7 +61,7 @@ public class CrawlerImpl implements Crawler {
         for (Element linkElement : document.select("a[href]")) {
             urls.add(linkElement.attr("abs:href"));
         }
-        Collections.sort(urls, Collections.reverseOrder());
+        urls.sort(Collections.reverseOrder());
         return urls;
     }
 
