@@ -1,13 +1,24 @@
 package org.example.Translator;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TranslatorImplTest {
-    private Translator translator;
+    private TranslatorImpl translator;
 
     @BeforeEach
     void setUp() {
-        translator = Mockito.mock(Translator.class);
+        translator = new TranslatorImpl();
+    }
+
+    @Test
+    void testTranslator(){
+        String translatedWord = translator.Translate("Kulturwissenschaft", "en");
+        assertEquals("Cultural Studies", translatedWord);
+
+        String sameLanguageWord = translator.Translate("Bonjour", "fr");
+        assertEquals("Bonjour", sameLanguageWord);
     }
 }
