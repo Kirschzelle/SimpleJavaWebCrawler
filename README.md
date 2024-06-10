@@ -38,7 +38,11 @@ This program provides a command-line interface for crawling websites. It allows 
 
 ### Examples
 - Please enter a url without the top-level domain
-  e.g. https://www.example: `https://aau`
+  e.g. https://www.example or type 'done' to finish: `https://aau`
+- Please enter a url without the top-level domain
+  e.g. https://www.example or type 'done' to finish: `https://github`
+- Please enter a url without the top-level domain
+  e.g. https://www.example or type 'done' to finish: `done`
 - Please enter a top-level domain (e.g. .com), or type 'done' to finish: `.at`
 - Please enter a top-level domain (e.g. .com), or type 'done' to finish: `done`
 - Please enter an integer to define the depth: `2`
