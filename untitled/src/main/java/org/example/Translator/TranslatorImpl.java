@@ -1,6 +1,6 @@
 package org.example.Translator;
 
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -11,62 +11,40 @@ import java.net.http.HttpResponse;
 
 public class TranslatorImpl implements Translator {
     private static final String API_KEY = "9da3583d25msh728bd7038dcfdddp15dcdajsn71a3bac3efcd";
-    private static final String TEXT_TRANSLATOR_ENDPOINT = "text-translator-v2.p.rapidapi.com";
+    private static final String TEXT_TRANSLATOR_ENDPOINT = "google-translate113.p.rapidapi.com";
+    private static final String ERROR = "ERROR";
 
     @Override
     public String Translate(String toTranslate, String targetLanguage) {
-        String sourceLanguage = GetSourceLanguage(toTranslate);
-        if (sourceLanguage.equals(targetLanguage)) {
-            return toTranslate;
-        }
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://text-translator-v2.p.rapidapi.com/api/translate/text"))
-                .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", API_KEY)
-                .header("X-RapidAPI-Host", TEXT_TRANSLATOR_ENDPOINT)
-                .method("POST", HttpRequest.BodyPublishers.ofString("{\n    \"text\": \"" + toTranslate + "\",\n    \"source\": \"" + sourceLanguage + "\",\n    \"target\": \"" + targetLanguage + "\"\n}"))
-                .build();
+        HttpRequest request = buildRequest(toTranslate, targetLanguage);
         HttpResponse<String> response;
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            return ERROR + toTranslate;
         }
-
-        JSONObject jsonResponse = new JSONObject(response.body());
-        String status = jsonResponse.getString("status");
-        if ("success".equals(status)) {
-            JSONObject payload = jsonResponse.getJSONObject("payload");
-            JSONArray translations = payload.getJSONArray("translations");
-            JSONObject translationInfo = translations.getJSONObject(0);
-            return translationInfo.getString("translation");
+        if (response.statusCode() != 200) {
+            return ERROR + toTranslate;
         }
-        return toTranslate;
+        return getTranslatedText(response);
     }
 
-    private String GetSourceLanguage(String toTranslate) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://text-translator-v2.p.rapidapi.com/api/translate/detect"))
-                .header("content-type", "application/json")
-                .header("X-RapidAPI-Key", API_KEY)
-                .header("X-RapidAPI-Host", TEXT_TRANSLATOR_ENDPOINT)
-                .method("POST", HttpRequest.BodyPublishers.ofString("{\n    \"text\": \"" + toTranslate + "\"\n}"))
+    private HttpRequest buildRequest(String toTranslate, String targetLanguage){
+        return HttpRequest.newBuilder()
+                .uri(URI.create("https://google-translate113.p.rapidapi.com/api/v1/translator/text"))
+                .header("x-rapidapi-key", API_KEY)
+                .header("x-rapidapi-host", TEXT_TRANSLATOR_ENDPOINT)
+                .header("Content-Type", "application/json")
+                .method("POST", HttpRequest.BodyPublishers.ofString("{\"from\":\"auto\",\"to\":\"" + targetLanguage + "\",\"text\":\"" + toTranslate + "\"}"))
                 .build();
-        HttpResponse<String> response;
+    }
+
+    private String getTranslatedText(HttpResponse<String> response){
         try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            JSONObject jsonResponse = new JSONObject(response.body());
+            return jsonResponse.getString("trans");
+        } catch (JSONException e) {
+            return ERROR + "Exception during translation parsing";
         }
-        JSONObject jsonResponse = new JSONObject(response.body());
-        String status = jsonResponse.getString("status");
-        if ("success".equals(status)) {
-            JSONObject payload = jsonResponse.getJSONObject("payload");
-            JSONArray languages = payload.getJSONArray("languages");
-            JSONObject languageInfo = languages.getJSONObject(0);
-            JSONObject language = languageInfo.getJSONObject("language");
-            return language.getString("language");
-        }
-        return "en";
     }
 }

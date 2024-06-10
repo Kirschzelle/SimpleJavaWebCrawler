@@ -74,12 +74,16 @@ public class InputImpl implements Input {
     private String GetTargetLanguage() {
         String targetLanguage;
         List<String> languageCodes = Arrays.asList(
-                "ar", "bg", "bn", "bs", "ca", "cnr", "cs", "cy", "da", "de",
-                "el", "en", "es", "et", "eu", "fi", "fr", "fr-CA", "ga",
-                "gu", "he", "hi", "hr", "hu", "id", "it", "ja", "kn", "ko",
-                "lt", "lv", "ml", "mr", "ms", "mt", "nb", "ne", "nl", "pa",
-                "pl", "pt", "ro", "ru", "si", "sk", "sl", "sr", "sv", "ta",
-                "te", "th", "tr", "uk", "ur", "vi", "zh", "zh-TW"
+                "af", "sq", "am", "ar", "hy", "as", "ay", "az", "bm", "eu", "be", "bn", "bho", "bs",
+                "bg", "ca", "ceb", "zh", "zh-cn", "zh-tw", "zh-sg", "zh-hk", "co", "hr", "cs", "da", "dv",
+                "doi", "nl", "en", "eo", "et", "ee", "fil", "fi", "fr", "fy", "gl", "ka", "de", "el", "gn",
+                "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "ilo", "id", "ga", "it",
+                "ja", "jv", "jw", "kn", "kk", "km", "rw", "gom", "ko", "kri", "ku", "ckb", "ky", "lo", "la",
+                "lv", "ln", "lt", "lg", "lb", "mk", "mai", "mg", "ms", "ml", "mt", "mi", "mr", "mni-mtei",
+                "lus", "mn", "my", "ne", "no", "ny", "or", "om", "ps", "fa", "pl", "pt", "pa", "qu", "ro",
+                "ru", "sm", "sa", "gd", "nso", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su",
+                "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "ti", "ts", "tr", "tk", "ak", "uk", "ur",
+                "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"
         );
         while (true) {
             System.out.print("Please enter a target language (e.g. en, ru, de): ");
