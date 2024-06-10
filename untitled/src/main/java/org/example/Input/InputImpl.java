@@ -14,27 +14,31 @@ public class InputImpl implements Input {
     @Override
     public CrawlArguments GetInput() {
         scanner = new Scanner(System.in);
-        String url = GetURL();
+        List<String> urls = GetURL();
         List<String> topLevelDomains = GetTopLevelDomains();
         int depth = GetDepth();
         String targetLanguage = GetTargetLanguage();
         scanner.close();
-        return new CrawlArguments(url, depth, topLevelDomains, targetLanguage);
+        return new CrawlArguments(urls, depth, topLevelDomains, targetLanguage);
     }
 
-    private String GetURL() {
-        String url;
+    private List<String> GetURL() {
+        List<String> urls = new ArrayList<>();
         while (true) {
-            System.out.print("Please enter a url without the top-level domain\ne.g. https://www.example: ");
-            url = scanner.nextLine();
+            System.out.print("Please enter a url without the top-level domain\ne.g. https://www.example or type 'done' to finish: ");
+            String url = scanner.nextLine();
             String urlPattern = "^(http|https)://(www\\.)?.+$";
-            if (Pattern.matches(urlPattern, url)) {
+            if (url.equalsIgnoreCase("done") && urls.isEmpty()) {
+                System.out.println("At least 1 url is required. Please try again");
+            } else if (url.equalsIgnoreCase("done")) {
                 break;
+            } else if (Pattern.matches(urlPattern, url)) {
+                urls.add(url);
             } else {
                 System.out.println("Invalid URL format. Please try again");
             }
         }
-        return url;
+        return urls;
     }
 
     private int GetDepth() {
