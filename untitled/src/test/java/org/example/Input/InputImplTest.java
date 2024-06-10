@@ -25,7 +25,7 @@ public class InputImplTest {
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         System.setIn(inputStream);
 
-        CrawlArguments crawlArguments = input.GetInput();
+        CrawlArguments crawlArguments = input.getInput();
 
         assertEquals("https://www.example", crawlArguments.url());
         assertEquals(3, crawlArguments.depth());

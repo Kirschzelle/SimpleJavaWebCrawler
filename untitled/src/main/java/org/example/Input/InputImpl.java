@@ -12,17 +12,17 @@ public class InputImpl implements Input {
     private Scanner scanner;
 
     @Override
-    public CrawlArguments GetInput() {
+    public CrawlArguments getInput() {
         scanner = new Scanner(System.in);
-        List<String> urls = GetURL();
-        List<String> topLevelDomains = GetTopLevelDomains();
-        int depth = GetDepth();
-        String targetLanguage = GetTargetLanguage();
+        List<String> urls = getURL();
+        List<String> topLevelDomains = getTopLevelDomains();
+        int depth = getDepth();
+        String targetLanguage = getTargetLanguage();
         scanner.close();
         return new CrawlArguments(urls, depth, topLevelDomains, targetLanguage);
     }
 
-    private List<String> GetURL() {
+    private List<String> getURL() {
         List<String> urls = new ArrayList<>();
         while (true) {
             System.out.print("Please enter a url without the top-level domain\ne.g. https://www.example or type 'done' to finish: ");
@@ -41,7 +41,7 @@ public class InputImpl implements Input {
         return urls;
     }
 
-    private int GetDepth() {
+    private int getDepth() {
         int depth;
         while (true) {
             System.out.print("Please enter an integer to define the depth: ");
@@ -56,7 +56,7 @@ public class InputImpl implements Input {
         return depth;
     }
 
-    private List<String> GetTopLevelDomains() {
+    private List<String> getTopLevelDomains() {
         List<String> topLevelDomains = new ArrayList<>();
         List<String> validTopLevelDomains = Arrays.asList(".at", ".com", ".org", ".net", ".gov", ".edu", ".mil", ".info", ".biz", ".io", ".co", ".me", ".tv", ".ca", ".uk", ".au", ".de", ".jp", ".fr", ".cn", ".it");
         while (true) {
@@ -75,7 +75,7 @@ public class InputImpl implements Input {
         return topLevelDomains;
     }
 
-    private String GetTargetLanguage() {
+    private String getTargetLanguage() {
         String targetLanguage;
         List<String> languageCodes = Arrays.asList(
                 "af", "sq", "am", "ar", "hy", "as", "ay", "az", "bm", "eu", "be", "bn", "bho", "bs",

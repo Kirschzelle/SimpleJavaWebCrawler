@@ -68,7 +68,7 @@ public class CrawlerImpl implements Crawler {
     private List<Heading> TranslateHeadings(List<Heading> headings, String language) {
         List<Heading> translatedHeadings = new ArrayList<>();
         for (Heading heading : headings) {
-            translatedHeadings.add(new Heading(heading.level(), translator.Translate(heading.value(), language)));
+            translatedHeadings.add(new Heading(heading.level(), translator.translate(heading.value(), language)));
         }
         return translatedHeadings;
     }

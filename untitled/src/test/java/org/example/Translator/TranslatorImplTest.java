@@ -15,10 +15,10 @@ public class TranslatorImplTest {
 
     @Test
     void testTranslator(){
-        String translatedWord = translator.Translate("Kulturwissenschaft", "en");
+        String translatedWord = translator.translate("Kulturwissenschaft", "en");
         assertEquals("Cultural Studies", translatedWord);
 
-        String sameLanguageWord = translator.Translate("Bonjour", "fr");
+        String sameLanguageWord = translator.translate("Bonjour", "fr");
         assertEquals("Bonjour", sameLanguageWord);
     }
 }

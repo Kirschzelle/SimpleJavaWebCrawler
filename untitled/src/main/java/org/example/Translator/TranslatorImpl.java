@@ -15,7 +15,7 @@ public class TranslatorImpl implements Translator {
     private static final String ERROR = "ERROR";
 
     @Override
-    public String Translate(String toTranslate, String targetLanguage) {
+    public String translate(String toTranslate, String targetLanguage) {
         HttpRequest request = buildRequest(toTranslate, targetLanguage);
         HttpResponse<String> response;
         try {
