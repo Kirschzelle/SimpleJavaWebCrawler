@@ -1,17 +1,19 @@
 package org.example.MDWriter;
 
+import org.example.EntryPoint.Main;
 import org.example.Structs.CrawlArguments;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class MDWriterImpl implements MDWriter {
     private String filePath;
 
     @Override
-    public void CreateFile(CrawlArguments arguments) throws IllegalStateException {
+    public void createFile(CrawlArguments arguments) throws IllegalStateException {
         if (filePath == null || filePath.isEmpty()) {
             throw new IllegalStateException("File path is not set.");
         }
@@ -31,7 +33,7 @@ public class MDWriterImpl implements MDWriter {
         } catch (IOException e) {
             throw new IllegalStateException("Failed to create the file.", e);
         }
-        AppendFile("""
+        appendFile("""
 
                                              aHHHHb.
                                             /`HHHHHHb
@@ -58,11 +60,11 @@ public class MDWriterImpl implements MDWriter {
                                            |     /|     |
                                            |     ||Krogg|dp\
                 """, 0);
-        AppendFile("\nUrl: "+arguments.url()+"\nDomains: "+arguments.topLevelDomains()+"\nDepth: "+arguments.depth()+"\nLanguage: "+arguments.targetLanguage(),0);
+        appendFile("\nUrl: "+arguments.url()+"\nDomains: "+arguments.topLevelDomains()+"\nDepth: "+arguments.depth()+"\nLanguage: "+arguments.targetLanguage(),0);
     }
 
     @Override
-    public void SetFilePath(String filePath) throws IllegalArgumentException {
+    public void setFilePath(String filePath) throws IllegalArgumentException {
         if (!filePath.toLowerCase().endsWith(".md")) {
             throw new IllegalArgumentException("File path must end with '.md'.");
         }
@@ -70,7 +72,7 @@ public class MDWriterImpl implements MDWriter {
     }
 
     @Override
-    public void AppendFile(String content, int level) throws IllegalStateException, IllegalArgumentException {
+    public void appendFile(String content, int level) throws IllegalStateException, IllegalArgumentException {
         if (filePath == null || filePath.isEmpty() || Files.notExists(Path.of(filePath))) {
             throw new IllegalStateException("File path is not set.");
         }
@@ -79,13 +81,28 @@ public class MDWriterImpl implements MDWriter {
         }
 
         try {
-            Files.write(Paths.get(filePath), AddDepthVisualToString(content, level).getBytes(), java.nio.file.StandardOpenOption.APPEND);
+            Files.write(Paths.get(filePath), addDepthVisualToString(content, level).getBytes(), java.nio.file.StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to append content to the file.", e);
         }
     }
 
-    private String AddDepthVisualToString(String input, int level){
+    @Override
+    public void combineFiles(List<String> urls) throws IllegalArgumentException {
+        for (String url:urls) {
+            try {
+                appendFile(readFile(url),0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private String readFile(String name) throws IOException {
+        return Files.readString(Path.of(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + name.replace('/', '-') + ".md"));
+    }
+
+    private String addDepthVisualToString(String input, int level){
         StringBuilder toInsert = new StringBuilder();
         toInsert.append("\n");
         toInsert.append("-".repeat(Math.max(0, level)));

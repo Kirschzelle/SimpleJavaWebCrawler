@@ -2,10 +2,14 @@ package org.example.MDWriter;
 
 import org.example.Structs.CrawlArguments;
 
+import java.util.List;
+
 public interface MDWriter {
-    void CreateFile(CrawlArguments arguments) throws IllegalStateException;
+    void createFile(CrawlArguments arguments) throws IllegalStateException;
 
-    void SetFilePath(String filePath) throws IllegalArgumentException;
+    void setFilePath(String filePath) throws IllegalArgumentException;
 
-    void AppendFile(String content, int level) throws IllegalStateException;
+    void appendFile(String content, int level) throws IllegalStateException;
+
+    void combineFiles(List<String> urls) throws IllegalArgumentException;
 }

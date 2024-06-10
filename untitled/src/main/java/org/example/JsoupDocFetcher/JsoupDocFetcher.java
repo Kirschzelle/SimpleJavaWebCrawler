@@ -5,5 +5,5 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 
 public interface JsoupDocFetcher {
-    Document GetWebsiteContent(String url) throws IOException;
+    Document getWebsiteContent(String url) throws IOException;
 }

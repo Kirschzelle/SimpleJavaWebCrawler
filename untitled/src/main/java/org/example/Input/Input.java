@@ -1,7 +1,7 @@
 package org.example.Input;
 
-import org.example.Structs.CrawlArguments;
+import org.example.Structs.InputArguments;
 
 public interface Input {
-    CrawlArguments getInput();
+    InputArguments getInput();
 }

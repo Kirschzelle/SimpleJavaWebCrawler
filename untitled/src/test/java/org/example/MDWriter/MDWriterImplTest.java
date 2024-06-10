@@ -44,22 +44,22 @@ public class MDWriterImplTest {
 
     @Test
     void testWriterFilePathAndCreate() {
-        Assertions.assertThrows(IllegalStateException.class, () -> writer.CreateFile(arguments));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> writer.SetFilePath(txtFilePath));
-        writer.SetFilePath(mdFilePath);
-        writer.CreateFile(arguments);
+        Assertions.assertThrows(IllegalStateException.class, () -> writer.createFile(arguments));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> writer.setFilePath(txtFilePath));
+        writer.setFilePath(mdFilePath);
+        writer.createFile(arguments);
         Assertions.assertTrue(Files.exists(Path.of(mdFilePath)));
     }
 
     @Test
     void testWriterAppend() {
-        Assertions.assertThrows(IllegalStateException.class, () -> writer.AppendFile("test", 3));
-        writer.SetFilePath(mdFilePath);
-        Assertions.assertThrows(IllegalStateException.class, () -> writer.AppendFile("test", 3));
-        writer.CreateFile(arguments);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> writer.AppendFile("test", -1));
-        writer.AppendFile("\ntest", 0);
-        writer.AppendFile("\ntest", 3);
+        Assertions.assertThrows(IllegalStateException.class, () -> writer.appendFile("test", 3));
+        writer.setFilePath(mdFilePath);
+        Assertions.assertThrows(IllegalStateException.class, () -> writer.appendFile("test", 3));
+        writer.createFile(arguments);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> writer.appendFile("test", -1));
+        writer.appendFile("\ntest", 0);
+        writer.appendFile("\ntest", 3);
         Assertions.assertDoesNotThrow(() -> {
                     BufferedReader reader = new BufferedReader(new FileReader(mdFilePath));
                     String line;

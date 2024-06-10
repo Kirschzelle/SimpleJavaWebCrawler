@@ -94,12 +94,12 @@ public class CrawlerImplTest {
         when(mockDocument2.select("h1, h2, h3, h4, h5, h6")).thenReturn(mockElements2);
         when(mockDocument2.select("a[href]")).thenReturn(mockLinks2);
 
-        doReturn(mockDocument1).when(fetcher).GetWebsiteContent("https://www.example.com");
-        doReturn(mockDocument2).when(fetcher).GetWebsiteContent("https://www.example.at");
+        doReturn(mockDocument1).when(fetcher).getWebsiteContent("https://www.example.com");
+        doReturn(mockDocument2).when(fetcher).getWebsiteContent("https://www.example.at");
 
-        crawler.Crawl(arguments);
+        crawler.crawl(arguments);
 
-        verify(mdWriter, times(11)).AppendFile(anyString(), anyInt());
+        verify(mdWriter, times(11)).appendFile(anyString(), anyInt());
     }
 
     private Element createMockHeader(Tag tag, String text) {

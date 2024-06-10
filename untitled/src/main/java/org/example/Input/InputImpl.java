@@ -1,6 +1,6 @@
 package org.example.Input;
 
-import org.example.Structs.CrawlArguments;
+import org.example.Structs.InputArguments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,14 +12,14 @@ public class InputImpl implements Input {
     private Scanner scanner;
 
     @Override
-    public CrawlArguments getInput() {
+    public InputArguments getInput() {
         scanner = new Scanner(System.in);
         List<String> urls = getURL();
         List<String> topLevelDomains = getTopLevelDomains();
         int depth = getDepth();
         String targetLanguage = getTargetLanguage();
         scanner.close();
-        return new CrawlArguments(urls, depth, topLevelDomains, targetLanguage);
+        return new InputArguments(urls, depth, topLevelDomains, targetLanguage);
     }
 
     private List<String> getURL() {
