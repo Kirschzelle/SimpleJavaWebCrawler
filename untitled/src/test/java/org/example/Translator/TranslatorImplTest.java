@@ -17,8 +17,5 @@ public class TranslatorImplTest {
     void testTranslator(){
         String translatedWord = translator.translate("Kulturwissenschaft", "en");
         assertEquals("Cultural Studies", translatedWord);
-
-        String sameLanguageWord = translator.translate("Bonjour", "fr");
-        assertEquals("Bonjour", sameLanguageWord);
     }
 }

@@ -26,11 +26,9 @@ public class InputImplTest {
         System.setIn(inputStream);
 
         CrawlArguments crawlArguments = input.getInput();
+        CrawlArguments expectedCrawlArguments = new CrawlArguments(List.of("https://www.example"), 3, List.of(".com"), "en");
 
-        assertEquals("https://www.example", crawlArguments.url());
-        assertEquals(3, crawlArguments.depth());
-        assertEquals(List.of(".com"), crawlArguments.topLevelDomains());
-        assertEquals("en", crawlArguments.targetLanguage());
+        assertEquals(expectedCrawlArguments, crawlArguments);
         System.setIn(System.in);
     }
 }
