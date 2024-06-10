@@ -24,8 +24,9 @@ public class InputImpl implements Input {
 
     private List<String> getURL() {
         List<String> urls = new ArrayList<>();
+        System.out.print("Please enter a url without the top-level domain e.g. https://www.example or type 'done' to finish\n");
         while (true) {
-            System.out.print("Please enter a url without the top-level domain\ne.g. https://www.example or type 'done' to finish: ");
+            System.out.print("Enter new url: ");
             String url = scanner.nextLine();
             String urlPattern = "^(http|https)://(www\\.)?.+$";
             if (url.equalsIgnoreCase("done") && urls.isEmpty()) {
@@ -33,7 +34,11 @@ public class InputImpl implements Input {
             } else if (url.equalsIgnoreCase("done")) {
                 break;
             } else if (Pattern.matches(urlPattern, url)) {
-                urls.add(url);
+                if(urls.contains(url)){
+                    System.out.println("URL already entered.");
+                } else {
+                    urls.add(url);
+                }
             } else {
                 System.out.println("Invalid URL format. Please try again");
             }
@@ -59,8 +64,9 @@ public class InputImpl implements Input {
     private List<String> getTopLevelDomains() {
         List<String> topLevelDomains = new ArrayList<>();
         List<String> validTopLevelDomains = Arrays.asList(".at", ".com", ".org", ".net", ".gov", ".edu", ".mil", ".info", ".biz", ".io", ".co", ".me", ".tv", ".ca", ".uk", ".au", ".de", ".jp", ".fr", ".cn", ".it");
+        System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish\n");
         while (true) {
-            System.out.print("Please enter a top-level domain (e.g. .com), or type 'done' to finish: ");
+            System.out.print("Enter new top-level domain: ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("done") && topLevelDomains.isEmpty()) {
                 System.out.println("At least 1 top-level domain is required. Please try again");
