@@ -1,6 +1,6 @@
-package org.example.MDWriter;
+package org.example.mdWriter;
 
-import org.example.Structs.CrawlArguments;
+import org.example.structs.CrawlArguments;
 
 import java.util.List;
 

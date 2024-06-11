@@ -1,4 +1,4 @@
-package org.example.Translator;
+package org.example.translator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

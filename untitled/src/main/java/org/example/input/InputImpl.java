@@ -1,6 +1,6 @@
-package org.example.Input;
+package org.example.input;
 
-import org.example.Structs.InputArguments;
+import org.example.structs.InputArguments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +20,15 @@ public class InputImpl implements Input {
         String targetLanguage = getTargetLanguage();
         scanner.close();
         return new InputArguments(urls, depth, topLevelDomains, targetLanguage);
+    }
+
+    @Override
+    public String getAPIKey(){
+        scanner = new Scanner(System.in);
+        String apiKey;
+        System.out.print("Please enter the API Key for Google Translate (rapidapi.com): ");
+        apiKey = scanner.nextLine();
+        return apiKey;
     }
 
     private List<String> getURL() {

@@ -1,9 +1,9 @@
-package org.example.Crawler;
+package org.example.crawler;
 
-import org.example.JsoupDocFetcher.JsoupDocFetcher;
-import org.example.Structs.CrawlArguments;
-import org.example.MDWriter.MDWriter;
-import org.example.Translator.Translator;
+import org.example.jsoupDocFetcher.JsoupDocFetcher;
+import org.example.structs.CrawlArguments;
+import org.example.mdWriter.MDWriter;
+import org.example.translator.Translator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class CrawlerImplTest {
 
     private CrawlerImpl crawler;

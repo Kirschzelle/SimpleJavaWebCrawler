@@ -1,4 +1,4 @@
-package org.example.JsoupDocFetcher;
+package org.example.jsoupDocFetcher;
 
 import org.jsoup.nodes.Document;
 

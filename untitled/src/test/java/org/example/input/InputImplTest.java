@@ -1,6 +1,6 @@
-package org.example.Input;
+package org.example.input;
 
-import org.example.Structs.InputArguments;
+import org.example.structs.InputArguments;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,14 +21,14 @@ public class InputImplTest {
 
     @Test
     void testInput() {
-        String simulatedInput = "https://www.example\n.com\ndone\n3\nen";
+        String simulatedInput = "https://www.example\ndone\n.com\ndone\n3\nen";
         InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
         System.setIn(inputStream);
 
-        InputArguments crawlArguments = input.getInput();
-        InputArguments expectedCrawlArguments = new InputArguments(List.of("https://www.example"), 3, List.of(".com"), "en");
+        InputArguments inputArguments = input.getInput();
+        InputArguments expectedInputArguments = new InputArguments(List.of("https://www.example"), 3, List.of(".com"), "en");
 
-        assertEquals(expectedCrawlArguments, crawlArguments);
+        assertEquals(expectedInputArguments, inputArguments);
         System.setIn(System.in);
     }
 }

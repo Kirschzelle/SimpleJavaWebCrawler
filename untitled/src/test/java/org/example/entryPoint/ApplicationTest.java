@@ -1,15 +1,13 @@
-package org.example.EntryPoint;
+package org.example.entryPoint;
 
-import org.example.Crawler.Crawler;
-import org.example.JsoupDocFetcher.JsoupDocFetcher;
-import org.example.MDWriter.MDWriter;
-import org.example.Structs.CrawlArguments;
-import org.example.Structs.InputArguments;
-import org.example.Translator.Translator;
+import org.example.crawler.Crawler;
+import org.example.jsoupDocFetcher.JsoupDocFetcher;
+import org.example.mdWriter.MDWriter;
+import org.example.structs.CrawlArguments;
+import org.example.structs.InputArguments;
+import org.example.translator.Translator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,9 +17,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings({"InstantiationOfUtilityClass", "JavaReflectionMemberAccess"})
 class ApplicationTest {
 
-    private Application app;
     private MDWriter mockWriter;
     private Translator mockTranslator;
     private JsoupDocFetcher mockFetcher;
@@ -33,7 +31,7 @@ class ApplicationTest {
         mockTranslator = mock(Translator.class);
         mockFetcher = mock(JsoupDocFetcher.class);
         mockCrawler = mock(Crawler.class);
-        app = new Application();
+        Application app = new Application();
     }
 
     @Test

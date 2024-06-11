@@ -1,7 +1,7 @@
-package org.example.MDWriter;
+package org.example.mdWriter;
 
-import org.example.EntryPoint.Main;
-import org.example.Structs.CrawlArguments;
+import org.example.entryPoint.Main;
+import org.example.structs.CrawlArguments;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

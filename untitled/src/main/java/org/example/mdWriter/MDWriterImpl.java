@@ -1,7 +1,7 @@
-package org.example.MDWriter;
+package org.example.mdWriter;
 
-import org.example.EntryPoint.Main;
-import org.example.Structs.CrawlArguments;
+import org.example.entryPoint.Main;
+import org.example.structs.CrawlArguments;
 
 import java.io.IOException;
 import java.nio.file.Files;

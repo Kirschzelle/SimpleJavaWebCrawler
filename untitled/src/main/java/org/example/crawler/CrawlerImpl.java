@@ -1,11 +1,11 @@
-package org.example.Crawler;
+package org.example.crawler;
 
-import org.example.JsoupDocFetcher.JsoupDocFetcher;
-import org.example.MDWriter.MDWriter;
-import org.example.Structs.CrawlArguments;
-import org.example.Structs.Heading;
-import org.example.Structs.URL;
-import org.example.Translator.Translator;
+import org.example.jsoupDocFetcher.JsoupDocFetcher;
+import org.example.mdWriter.MDWriter;
+import org.example.structs.CrawlArguments;
+import org.example.structs.Heading;
+import org.example.structs.URL;
+import org.example.translator.Translator;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;

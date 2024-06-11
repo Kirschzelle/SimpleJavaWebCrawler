@@ -1,4 +1,4 @@
-package org.example.Structs;
+package org.example.structs;
 
 import java.util.List;
 
