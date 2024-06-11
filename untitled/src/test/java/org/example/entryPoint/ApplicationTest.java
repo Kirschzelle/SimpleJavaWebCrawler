@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SuppressWarnings({"InstantiationOfUtilityClass", "JavaReflectionMemberAccess"})
+@SuppressWarnings({"JavaReflectionMemberAccess"})
 class ApplicationTest {
 
     private MDWriter mockWriter;
