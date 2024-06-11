@@ -31,7 +31,6 @@ class ApplicationTest {
         mockTranslator = mock(Translator.class);
         mockFetcher = mock(JsoupDocFetcher.class);
         mockCrawler = mock(Crawler.class);
-        Application app = new Application();
     }
 
     @Test
@@ -56,14 +55,11 @@ class ApplicationTest {
     void testCrawlUrl() throws Exception {
         CrawlArguments crawlArguments = new CrawlArguments("http://example.com", 1, new ArrayList<>(), "en");
 
-        // Access the private method
         Method crawlUrlMethod = Application.class.getDeclaredMethod("crawlUrl", CrawlArguments.class, MDWriter.class, Translator.class, JsoupDocFetcher.class, Crawler.class);
         crawlUrlMethod.setAccessible(true);
 
-        // Invoke the method
         crawlUrlMethod.invoke(null, crawlArguments, mockWriter, mockTranslator, mockFetcher, mockCrawler);
 
-        // Verify the interactions with mocked dependencies
         verify(mockWriter).createFile(crawlArguments);
         verify(mockCrawler).crawl(crawlArguments);
     }

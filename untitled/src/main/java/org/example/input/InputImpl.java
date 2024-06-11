@@ -27,7 +27,14 @@ public class InputImpl implements Input {
         scanner = new Scanner(System.in);
         String apiKey;
         System.out.print("Please enter the API Key for Google Translate (rapidapi.com): ");
-        apiKey = scanner.nextLine();
+        while (true) {
+            apiKey = scanner.nextLine();
+            if(apiKey.isEmpty()){
+                System.out.println("Please enter the API Key: ");
+            } else {
+                break;
+            }
+        }
         return apiKey;
     }
 

@@ -10,7 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class TranslatorImpl implements Translator {
-    private String apiKey = "none";
+    private String apiKey = "9da3583d25msh728bd7038dcfdddp15dcdajsn71a3bac3efcd";
     private static final String TEXT_TRANSLATOR_ENDPOINT = "google-translate113.p.rapidapi.com";
 
     @Override
