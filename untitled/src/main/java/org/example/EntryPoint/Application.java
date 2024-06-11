@@ -24,24 +24,23 @@ public class Application {
         List<Thread> threads = createThreads(arguments);
         System.out.println("Crawling...");
         waitOnThreads(threads);
-        combineResults(arguments);
+        combineResults(arguments, new MDWriterImpl());
         System.out.println("Done, find results in:"+Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + "results" + ".md" );
     }
 
-    private static void crawlUrl(CrawlArguments arguments){
-        MDWriter writer = new MDWriterImpl();
-        Translator translator = new TranslatorImpl();
-        JsoupDocFetcher fetcher = new JsoupDocFetcherImpl();
+    private static void crawlUrl(CrawlArguments arguments, MDWriter writer, Translator translator, JsoupDocFetcher fetcher, Crawler crawler){
         writer.setFilePath(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + arguments.url().replace('/', '-') + ".md");
         writer.createFile(arguments);
-        Crawler crawler = new CrawlerImpl(translator, writer, fetcher);
         crawler.crawl(arguments);
     }
 
     private static List<Thread> createThreads(InputArguments arguments){
         List<Thread> threads = new ArrayList<>();
         for (String url:arguments.urls()) {
-            Thread thread = new Thread(() -> crawlUrl(new CrawlArguments(url, arguments.depth(), arguments.topLevelDomains(), arguments.targetLanguage())));
+            MDWriter writer = new MDWriterImpl();
+            Translator translator = new TranslatorImpl();
+            JsoupDocFetcher fetcher = new JsoupDocFetcherImpl();
+            Thread thread = new Thread(() -> crawlUrl(new CrawlArguments(url, arguments.depth(), arguments.topLevelDomains(), arguments.targetLanguage()),writer, translator, fetcher, new CrawlerImpl(translator, writer, fetcher)));
             thread.start();
             threads.add(thread);
         }
@@ -58,8 +57,7 @@ public class Application {
         }
     }
 
-    private static void combineResults(InputArguments arguments){
-        MDWriter writer = new MDWriterImpl();
+    private static void combineResults(InputArguments arguments, MDWriter writer){
         writer.setFilePath(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/outputs/" + "results" + ".md");
         writer.createFile(new CrawlArguments(arguments.urls().toString(),arguments.depth(),arguments.topLevelDomains(), arguments.targetLanguage()));
         writer.combineFiles(arguments.urls());

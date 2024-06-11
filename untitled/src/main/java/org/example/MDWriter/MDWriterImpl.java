@@ -93,7 +93,7 @@ public class MDWriterImpl implements MDWriter {
             try {
                 appendFile(readFile(url),0);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Failed to find results of url: "+url+" \nMaybe file was deleted or moved? Skipping file.");
             }
         }
     }
