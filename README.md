@@ -15,6 +15,7 @@ This program provides a command-line interface for crawling websites. It allows 
 2. You are asked to give the parameters from the command line
 
 ### Examples
+- Please enter the API Key for Google Translate (rapidapi.com): Enter API Key, if Key is invalid translation will be skipped.
 - Please enter an url without the top-level domain e.g. https://www.example or type 'done' to finish
 - Enter new url: `https://github`
 - Enter new url: `https://oebb`
